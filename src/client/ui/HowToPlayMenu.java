@@ -58,28 +58,28 @@ public class HowToPlayMenu extends JFrame {
         }
         int MaxPages = i;
         int current = 0;
-        System.out.println("I:"+i+"/nMaxPages:"+MaxPages);
-        System.out.println(howTo[0]);
-        
-        
+//        System.out.println("I:"+i+"/nMaxPages:"+MaxPages);
+//        System.out.println(howTo[0]);
         
         ImageIcon next = new ImageIcon("pics/NextArrow.png");
         ImageIcon prev = new ImageIcon("pics/PrevArrow.png");
         
-        JButton mainButton = new JButton("Main Menu");
-        JLabel instructions = new JLabel(howTo[0]);
-        JButton nextDialog = new JButton(next);
-        JButton prevDialog = new JButton(prev);
+        JButton mainButton = new JButton("Main Menu"); //returns users to the main menu
+        JLabel instructions = new JLabel(howTo[0]); //a label that contains the current page of instructions
+        JButton nextDialog = new JButton(next); //a button to display the next page of instructions
+        JButton prevDialog = new JButton(prev); //a button to display the previous page of instructions
         
-        
+        //this button functionality is completed
         mainButton.addActionListener((ActionEvent event) -> {
         	leavePage();
         });
         
+        //todo when users click this button it loads the next page of instuctions
         nextDialog.addActionListener((ActionEvent event) -> {
-        	leavePage();
+        	
         });
         
+      //todo when users click this button it loads the previous page of instuctions
         prevDialog.addActionListener((ActionEvent event) -> {
         	if(current != 0) {
         		
@@ -101,6 +101,7 @@ public class HowToPlayMenu extends JFrame {
 		MainMenu.main(args);
 	}
 	
+	//turn buttons invisible when they arn't needed
 	private void updateButtons(int max, int current) {
 		
 	}
