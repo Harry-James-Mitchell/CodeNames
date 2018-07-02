@@ -77,7 +77,7 @@ public class HowToPlayMenu extends JFrame {
         	leavePage();
         });
         
-        //todo when users click this button it loads the next page of instuctions
+        //when users click this button it loads the next page of instuctions
         nextDialog.addActionListener((ActionEvent event) -> {
         	if(current < numPages) {
         		current++;
@@ -90,7 +90,7 @@ public class HowToPlayMenu extends JFrame {
         	}
         });
         
-      //todo when users click this button it loads the previous page of instuctions
+      //when users click this button it loads the previous page of instuctions
         prevDialog.addActionListener((ActionEvent event) -> {
         	if(current != 0) {
         		current--;

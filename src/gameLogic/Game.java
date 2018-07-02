@@ -7,8 +7,10 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -17,7 +19,7 @@ import client.ui.MainMenu;
 public class Game extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	private final int width = 700;
+	private final int width = 1000;
 	private final int height = 700;
 	private static long seed;
 	private final int NUMBER_OF_CARDS = 25;
@@ -39,6 +41,7 @@ public class Game extends JFrame {
 		setSize(width, height);
 		setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+//        this.setLayout(null);
         
         File file = new File("textFiles/Words.txt");//This text file contains all of the words used in the game
         Random rand = new Random(seed); //We use the room code as the seed so everyone has the same board.
@@ -57,6 +60,14 @@ public class Game extends JFrame {
         	MainMenu.main(args);
         }
         
+        JButton endTurn = new JButton("End Turn");
+        JLabel currentTurn = new JLabel("Red's turn");
+        ImageIcon redSpy = new ImageIcon("pics/RedSpy.png");
+        ImageIcon blueSpy = new ImageIcon("pics/BlueSpy.png");
+        
+        currentTurn.setLocation((width/2)-15, 25);
+        endTurn.setLocation(width-75, 25);
+        
         //assign a word to every button and keep track of them using the codeNameCard object
         JButton[] cardButtons = new JButton[NUMBER_OF_CARDS];
         CodeNameCard[] cnc = new CodeNameCard[NUMBER_OF_CARDS];
@@ -66,9 +77,13 @@ public class Game extends JFrame {
         	String nextWord = words.get(index);
         	words.remove(index);
         	cardButtons[i] = new JButton(nextWord);
+        	cardButtons[i].setSize(100, 25);
+        	cardButtons[i].setLocation((i%5)*100 + 33, (i%5)*100 + 200);
         	cnc[i] = new CodeNameCard(nextWord, "white", i);
         	locations.add(i);
         }
+        
+        
         
         //Assign all of red's cards
         for(int i=0; i<RED_CARDS; i++) {
@@ -77,6 +92,31 @@ public class Game extends JFrame {
         	locations.remove(index);
         }
         
+        //Assign all of blue's cards
+        for(int i=0; i<BLUE_CARDS; i++) {
+        	int index = rand.nextInt(locations.size());
+        	cnc[index].setColor("blue");
+        	locations.remove(index);
+        }
+        
+        //Assign all the black cards
+        for(int i=0; i<DEATH_CARDS; i++) {
+        	int index = rand.nextInt(locations.size());
+        	cnc[index].setColor("black");
+        	locations.remove(index);
+        }
+        
+        //fill the remaining cards with the color white
+        while(!locations.isEmpty()) {
+        	int index = rand.nextInt(locations.size());
+            cnc[index].setColor("White");
+            locations.remove(index);
+        }
+        
+        
+        
+        displayPanel.add(currentTurn);
+        displayPanel.add(endTurn);
         for(int i=0;i<NUMBER_OF_CARDS; i++) {
         	displayPanel.add(cardButtons[i]);
         }
