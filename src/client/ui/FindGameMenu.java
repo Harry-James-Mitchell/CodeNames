@@ -31,7 +31,7 @@ public class FindGameMenu extends JFrame {
         
         JButton toMainMenu = new JButton("Main Menu");
         JButton setSeed = new JButton("Start Game");
-        JTextField seed = new JTextField("Enter Room Code Here");
+        JTextField seed = new JTextField("");
         
         String[] args = new String[0];
         toMainMenu.addActionListener((ActionEvent event) -> {
@@ -42,7 +42,7 @@ public class FindGameMenu extends JFrame {
         setSeed.addActionListener((ActionEvent event) -> {
         	String roomCode = seed.getText();
         	if(roomCode == null) {
-        		JOptionPane.showMessageDialog(null, "");
+        		JOptionPane.showMessageDialog(null, "You must enter a room code to join a game!");
         	} else {
         		this.leavePage();
         		Game.main(args, roomCode);
