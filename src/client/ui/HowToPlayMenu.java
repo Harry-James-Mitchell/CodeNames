@@ -17,11 +17,12 @@ import javax.swing.JPanel;
 
 public class HowToPlayMenu extends JFrame {
 	
-	private final int width = 450;
-	private final int height = 400;
+	private final int WIDTH = 450;
+	private final int HEIGHT = 400;
 	private static JPanel displayPanel;
-	private final int pages = 10;
-	
+	private final int MAX_PAGES = 10;
+	private int current;
+	private int numPages;
 	public HowToPlayMenu() {
 		initUI();
 	}
@@ -30,16 +31,18 @@ public class HowToPlayMenu extends JFrame {
 		
 		displayPanel = new JPanel();
 		setTitle("How to play");
-		setSize(width, height);
+		setSize(WIDTH, HEIGHT);
 		setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         
         String[] howTo = new String[]{"<html>","<html>","<html>","<html>","<html>","<html>","<html>","<html>","<html>","<html>"};
         int i = 0;
+        current = 0;
+        numPages = 0;
         File rules = new File("textFiles/rules.txt");
         try {
         	BufferedReader br = new BufferedReader(new FileReader(rules));
-        	for(i=0; i<pages; i++) {
+        	for(i=0; i<MAX_PAGES; i++) {
         		boolean flag = false;
             	for(int j=0; j<10; j++) {
             		String line = br.readLine();
@@ -56,8 +59,8 @@ public class HowToPlayMenu extends JFrame {
         	JOptionPane.showMessageDialog(null, "The rules.txt file has been does not exist!\nReturning to main menu!");
         	this.leavePage();
         }
-        int MaxPages = i;
-        int current = 0;
+       numPages = i;
+        
 //        System.out.println("I:"+i+"/nMaxPages:"+MaxPages);
 //        System.out.println(howTo[0]);
         
@@ -76,20 +79,34 @@ public class HowToPlayMenu extends JFrame {
         
         //todo when users click this button it loads the next page of instuctions
         nextDialog.addActionListener((ActionEvent event) -> {
-        	
+        	if(current < numPages) {
+        		current++;
+        		instructions.setText(howTo[current]);
+        		if(current == numPages) {
+        			nextDialog.setVisible(false);
+        		}else if(current == 1) {
+        			prevDialog.setVisible(true);
+        		}
+        	}
         });
         
       //todo when users click this button it loads the previous page of instuctions
         prevDialog.addActionListener((ActionEvent event) -> {
         	if(current != 0) {
-        		
+        		current--;
+        		instructions.setText(howTo[current]);
+        		if(current == 0) {
+        			prevDialog.setVisible(false);
+        		}else if(current == numPages - 1) {
+        			nextDialog.setVisible(true);
+        		}
         	}
         });
         
         displayPanel.add(mainButton);
         displayPanel.add(instructions);
-        displayPanel.add(nextDialog);
         displayPanel.add(prevDialog);
+        displayPanel.add(nextDialog);
         this.add(displayPanel);
         this.setVisible(true);
 	}
@@ -99,11 +116,6 @@ public class HowToPlayMenu extends JFrame {
 		this.removeAll();
 		this.setVisible(false);
 		MainMenu.main(args);
-	}
-	
-	//turn buttons invisible when they arn't needed
-	private void updateButtons(int max, int current) {
-		
 	}
 
 	public static void main(String args[]) {
