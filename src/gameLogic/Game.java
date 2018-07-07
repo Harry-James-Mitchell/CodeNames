@@ -29,13 +29,14 @@ public class Game extends JFrame {
 	private final int RED_CARDS = 9;
 	private final int BLUE_CARDS = 8;
 	private final int DEATH_CARDS = 1;
+	private int currentTurn = 0;
 	
 	public Game(){
 		initUI();
 	}
 	
 	private void newGame() {
-		
+		currentTurn = 0;
 	}
 	
 	private void initUI() {
@@ -94,7 +95,6 @@ public class Game extends JFrame {
         	locations.remove(r);
         }
         
-        System.out.print("\nblues:");
         //Assign all of blue's cards
         for(int i=0; i<BLUE_CARDS; i++) {
         	int r = rand.nextInt(locations.size());
@@ -113,7 +113,278 @@ public class Game extends JFrame {
         
         //The following buttons are the 25 cards in the game.
         cardButtons[0].addActionListener((ActionEvent event) -> {
-        	
+        	try {
+    			Field field = Class.forName("java.awt.Color").getField(cnc[0].getColor());
+        		Color color = (Color)field.get(null);
+        		cardButtons[0].setBackground(color);
+        		this.updateTurn(cnc[0].getColor());
+    		} catch (Exception e) {
+    			JOptionPane.showMessageDialog(null, "Unable to fetch colors. :(");
+    		}
+        });
+        
+        cardButtons[1].addActionListener((ActionEvent event) -> {
+        	try {
+    			Field field = Class.forName("java.awt.Color").getField(cnc[1].getColor());
+        		Color color = (Color)field.get(null);
+        		cardButtons[1].setBackground(color);
+        		this.updateTurn(cnc[1].getColor());
+    		} catch (Exception e) {
+    			JOptionPane.showMessageDialog(null, "Unable to fetch colors. :(");
+    		}
+        });
+        
+        cardButtons[2].addActionListener((ActionEvent event) -> {
+        	try {
+    			Field field = Class.forName("java.awt.Color").getField(cnc[2].getColor());
+        		Color color = (Color)field.get(null);
+        		cardButtons[2].setBackground(color);
+        		this.updateTurn(cnc[2].getColor());
+    		} catch (Exception e) {
+    			JOptionPane.showMessageDialog(null, "Unable to fetch colors. :(");
+    		}
+        });
+        
+        cardButtons[3].addActionListener((ActionEvent event) -> {
+        	try {
+    			Field field = Class.forName("java.awt.Color").getField(cnc[3].getColor());
+        		Color color = (Color)field.get(null);
+        		cardButtons[3].setBackground(color);
+        		this.updateTurn(cnc[3].getColor());
+    		} catch (Exception e) {
+    			JOptionPane.showMessageDialog(null, "Unable to fetch colors. :(");
+    		}
+        });
+        
+        cardButtons[4].addActionListener((ActionEvent event) -> {
+        	try {
+    			Field field = Class.forName("java.awt.Color").getField(cnc[0].getColor());
+        		Color color = (Color)field.get(null);
+        		cardButtons[4].setBackground(color);
+        		this.updateTurn(cnc[4].getColor());
+    		} catch (Exception e) {
+    			JOptionPane.showMessageDialog(null, "Unable to fetch colors. :(");
+    		}
+        });
+        
+        cardButtons[5].addActionListener((ActionEvent event) -> {
+        	try {
+    			Field field = Class.forName("java.awt.Color").getField(cnc[5].getColor());
+        		Color color = (Color)field.get(null);
+        		cardButtons[5].setBackground(color);
+        		this.updateTurn(cnc[5].getColor());
+    		} catch (Exception e) {
+    			JOptionPane.showMessageDialog(null, "Unable to fetch colors. :(");
+    		}
+        });
+        
+        cardButtons[6].addActionListener((ActionEvent event) -> {
+        	try {
+    			Field field = Class.forName("java.awt.Color").getField(cnc[6].getColor());
+        		Color color = (Color)field.get(null);
+        		cardButtons[6].setBackground(color);
+        		this.updateTurn(cnc[6].getColor());
+    		} catch (Exception e) {
+    			JOptionPane.showMessageDialog(null, "Unable to fetch colors. :(");
+    		}
+        });
+        
+        cardButtons[7].addActionListener((ActionEvent event) -> {
+        	try {
+    			Field field = Class.forName("java.awt.Color").getField(cnc[7].getColor());
+        		Color color = (Color)field.get(null);
+        		cardButtons[7].setBackground(color);
+        		this.updateTurn(cnc[7].getColor());
+    		} catch (Exception e) {
+    			JOptionPane.showMessageDialog(null, "Unable to fetch colors. :(");
+    		}
+        });
+        
+        cardButtons[8].addActionListener((ActionEvent event) -> {
+        	try {
+    			Field field = Class.forName("java.awt.Color").getField(cnc[8].getColor());
+        		Color color = (Color)field.get(null);
+        		cardButtons[8].setBackground(color);
+        		this.updateTurn(cnc[8].getColor());
+    		} catch (Exception e) {
+    			JOptionPane.showMessageDialog(null, "Unable to fetch colors. :(");
+    		}
+        });
+        
+        cardButtons[9].addActionListener((ActionEvent event) -> {
+        	try {
+    			Field field = Class.forName("java.awt.Color").getField(cnc[9].getColor());
+        		Color color = (Color)field.get(null);
+        		cardButtons[9].setBackground(color);
+        		this.updateTurn(cnc[9].getColor());
+    		} catch (Exception e) {
+    			JOptionPane.showMessageDialog(null, "Unable to fetch colors. :(");
+    		}
+        });
+        
+        cardButtons[10].addActionListener((ActionEvent event) -> {
+        	try {
+    			Field field = Class.forName("java.awt.Color").getField(cnc[10].getColor());
+        		Color color = (Color)field.get(null);
+        		cardButtons[10].setBackground(color);
+        		this.updateTurn(cnc[10].getColor());
+    		} catch (Exception e) {
+    			JOptionPane.showMessageDialog(null, "Unable to fetch colors. :(");
+    		}
+        });
+        
+        cardButtons[11].addActionListener((ActionEvent event) -> {
+        	try {
+    			Field field = Class.forName("java.awt.Color").getField(cnc[11].getColor());
+        		Color color = (Color)field.get(null);
+        		cardButtons[11].setBackground(color);
+        		this.updateTurn(cnc[11].getColor());
+    		} catch (Exception e) {
+    			JOptionPane.showMessageDialog(null, "Unable to fetch colors. :(");
+    		}
+        });
+        
+        cardButtons[12].addActionListener((ActionEvent event) -> {
+        	try {
+    			Field field = Class.forName("java.awt.Color").getField(cnc[12].getColor());
+        		Color color = (Color)field.get(null);
+        		cardButtons[12].setBackground(color);
+        		this.updateTurn(cnc[12].getColor());
+    		} catch (Exception e) {
+    			JOptionPane.showMessageDialog(null, "Unable to fetch colors. :(");
+    		}
+        });
+        
+        cardButtons[13].addActionListener((ActionEvent event) -> {
+        	try {
+    			Field field = Class.forName("java.awt.Color").getField(cnc[13].getColor());
+        		Color color = (Color)field.get(null);
+        		cardButtons[13].setBackground(color);
+        		this.updateTurn(cnc[13].getColor());
+    		} catch (Exception e) {
+    			JOptionPane.showMessageDialog(null, "Unable to fetch colors. :(");
+    		}
+        });
+        
+        cardButtons[14].addActionListener((ActionEvent event) -> {
+        	try {
+    			Field field = Class.forName("java.awt.Color").getField(cnc[14].getColor());
+        		Color color = (Color)field.get(null);
+        		cardButtons[14].setBackground(color);
+        		this.updateTurn(cnc[14].getColor());
+    		} catch (Exception e) {
+    			JOptionPane.showMessageDialog(null, "Unable to fetch colors. :(");
+    		}
+        });
+        
+        cardButtons[15].addActionListener((ActionEvent event) -> {
+        	try {
+    			Field field = Class.forName("java.awt.Color").getField(cnc[15].getColor());
+        		Color color = (Color)field.get(null);
+        		cardButtons[15].setBackground(color);
+        		this.updateTurn(cnc[15].getColor());
+    		} catch (Exception e) {
+    			JOptionPane.showMessageDialog(null, "Unable to fetch colors. :(");
+    		}
+        });
+        
+        cardButtons[16].addActionListener((ActionEvent event) -> {
+        	try {
+    			Field field = Class.forName("java.awt.Color").getField(cnc[16].getColor());
+        		Color color = (Color)field.get(null);
+        		cardButtons[16].setBackground(color);
+        		this.updateTurn(cnc[16].getColor());
+    		} catch (Exception e) {
+    			JOptionPane.showMessageDialog(null, "Unable to fetch colors. :(");
+    		}
+        });
+        
+        cardButtons[17].addActionListener((ActionEvent event) -> {
+        	try {
+    			Field field = Class.forName("java.awt.Color").getField(cnc[17].getColor());
+        		Color color = (Color)field.get(null);
+        		cardButtons[17].setBackground(color);
+        		this.updateTurn(cnc[17].getColor());
+    		} catch (Exception e) {
+    			JOptionPane.showMessageDialog(null, "Unable to fetch colors. :(");
+    		}
+        });
+        
+        cardButtons[18].addActionListener((ActionEvent event) -> {
+        	try {
+    			Field field = Class.forName("java.awt.Color").getField(cnc[18].getColor());
+        		Color color = (Color)field.get(null);
+        		cardButtons[18].setBackground(color);
+        		this.updateTurn(cnc[18].getColor());
+    		} catch (Exception e) {
+    			JOptionPane.showMessageDialog(null, "Unable to fetch colors. :(");
+    		}
+        });
+        
+        cardButtons[19].addActionListener((ActionEvent event) -> {
+        	try {
+    			Field field = Class.forName("java.awt.Color").getField(cnc[19].getColor());
+        		Color color = (Color)field.get(null);
+        		cardButtons[19].setBackground(color);
+        		this.updateTurn(cnc[19].getColor());
+    		} catch (Exception e) {
+    			JOptionPane.showMessageDialog(null, "Unable to fetch colors. :(");
+    		}
+        });
+        
+        cardButtons[20].addActionListener((ActionEvent event) -> {
+        	try {
+    			Field field = Class.forName("java.awt.Color").getField(cnc[20].getColor());
+        		Color color = (Color)field.get(null);
+        		cardButtons[20].setBackground(color);
+        		this.updateTurn(cnc[20].getColor());
+    		} catch (Exception e) {
+    			JOptionPane.showMessageDialog(null, "Unable to fetch colors. :(");
+    		}
+        });
+        
+        cardButtons[21].addActionListener((ActionEvent event) -> {
+        	try {
+    			Field field = Class.forName("java.awt.Color").getField(cnc[21].getColor());
+        		Color color = (Color)field.get(null);
+        		cardButtons[21].setBackground(color);
+        		this.updateTurn(cnc[21].getColor());
+    		} catch (Exception e) {
+    			JOptionPane.showMessageDialog(null, "Unable to fetch colors. :(");
+    		}
+        });
+        
+        cardButtons[22].addActionListener((ActionEvent event) -> {
+        	try {
+    			Field field = Class.forName("java.awt.Color").getField(cnc[22].getColor());
+        		Color color = (Color)field.get(null);
+        		cardButtons[22].setBackground(color);
+        		this.updateTurn(cnc[22].getColor());
+    		} catch (Exception e) {
+    			JOptionPane.showMessageDialog(null, "Unable to fetch colors. :(");
+    		}
+        });
+        
+        cardButtons[23].addActionListener((ActionEvent event) -> {
+        	try {
+    			Field field = Class.forName("java.awt.Color").getField(cnc[23].getColor());
+        		Color color = (Color)field.get(null);
+        		cardButtons[23].setBackground(color);
+        		this.updateTurn(cnc[23].getColor());
+    		} catch (Exception e) {
+    			JOptionPane.showMessageDialog(null, "Unable to fetch colors. :(");
+    		}
+        });
+        
+        cardButtons[24].addActionListener((ActionEvent event) -> {
+        	try {
+    			Field field = Class.forName("java.awt.Color").getField(cnc[24].getColor());
+        		Color color = (Color)field.get(null);
+        		cardButtons[24].setBackground(color);
+        		this.updateTurn(cnc[24].getColor());
+    		} catch (Exception e) {
+    			JOptionPane.showMessageDialog(null, "Unable to fetch colors. :(");
+    		}
         });
         
         JButton spyM = new JButton("SpyMaster");
@@ -138,6 +409,11 @@ public class Game extends JFrame {
         }
         this.add(displayPanel);
         this.setVisible(true);
+	}
+	
+	//This method takes in the color of the clicked button and determines if the turn should be updated
+	private void updateTurn(String C) {
+		
 	}
 	
 	private void leavePage() {
