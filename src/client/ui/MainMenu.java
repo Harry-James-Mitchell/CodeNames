@@ -20,15 +20,28 @@ public class MainMenu extends JFrame {
 	
 	public void initUI() {
 		displayPanel = new JPanel();
+		displayPanel.setLayout(null);
 		setTitle("Main Menu");
 		setSize(width, height);
 		setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         
         JButton startButton = new JButton("Join Game");
+        startButton.setLocation(125, 50);
+        startButton.setSize(150,50);
+        
         JButton instructionsButton = new JButton("How to play");
+        instructionsButton.setLocation(125, 150);
+        instructionsButton.setSize(150,50);
+        
         JButton creditsButton = new JButton("Credits");
+        creditsButton.setLocation(125, 220);
+        creditsButton.setSize(150,50);
+        
         JButton quitButton = new JButton("Quit");
+        quitButton.setLocation(125, 320);
+        quitButton.setSize(150,50);
+        
         
         String[] args = new String[0];
         startButton.addActionListener((ActionEvent event) -> {
