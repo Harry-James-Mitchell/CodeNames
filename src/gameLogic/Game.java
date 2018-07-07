@@ -31,6 +31,8 @@ public class Game extends JFrame {
 	private final int DEATH_CARDS = 1;
 	private int currentTurn = 0;
 	private JLabel turnName = new JLabel();
+	private JLabel redTurn;
+	private JLabel blueTurn;
 	
 	public Game(){
 		initUI();
@@ -43,6 +45,7 @@ public class Game extends JFrame {
 	
 	private void initUI() {
 		JPanel displayPanel = new JPanel();
+		displayPanel.setLayout(null);
 		setTitle("CodeNames");
 		setSize(width, height);
 		setLocationRelativeTo(null);
@@ -67,22 +70,46 @@ public class Game extends JFrame {
         }
         
         JButton endTurn = new JButton("End Turn");
-        ImageIcon redSpy = new ImageIcon("pics/RedSpy.png");
-        ImageIcon blueSpy = new ImageIcon("pics/BlueSpy.png");
+        endTurn.setLocation(450, 25);
+        endTurn.setSize(100, 30);
         
-        endTurn.setLocation(width-75, 25);
+        ImageIcon redSpy = new ImageIcon("pics/RedSpy.png");
+        JButton redSM = new JButton();
+        redSM.setIcon(redSpy);
+        redSM.setLocation(10, 200);
+        redSM.setSize(100, 300);
+
+        ImageIcon blueSpy = new ImageIcon("pics/BlueSpy.png");
+        JButton blueSM = new JButton();
+        blueSM.setIcon(blueSpy);
+        blueSM.setLocation(875, 200);
+        blueSM.setSize(100, 300);
+ 
+        ImageIcon pointer = new ImageIcon("pics/TurnCursor.png");
+        redTurn = new JLabel();
+        redTurn.setIcon(pointer);
+        redTurn.setLocation(45, 150);
+        redTurn.setSize(100, 50);
+        
+        blueTurn = new JLabel();
+        blueTurn.setIcon(pointer);
+        blueTurn.setLocation(910, 150);
+        blueTurn.setSize(100, 50);
+        blueTurn.setVisible(false);
         
         //assign a word to every button and keep track of them using the codeNameCard object
         JButton[] cardButtons = new JButton[NUMBER_OF_CARDS];
         CodeNameCard[] cnc = new CodeNameCard[NUMBER_OF_CARDS];
         ArrayList<Integer> locations = new ArrayList<Integer>();
+        int c =-1;
         for(int i=0; i<NUMBER_OF_CARDS; i++){
+        	if(i%5 ==0) c++;
         	int index = rand.nextInt(words.size());
         	String nextWord = words.get(index);
         	words.remove(index);
         	cardButtons[i] = new JButton(nextWord);
-        	cardButtons[i].setSize(100, 25);
-        	cardButtons[i].setLocation((i%5)*100 + 33, (i%5)*100 + 200);
+        	cardButtons[i].setSize(125, 25);
+        	cardButtons[i].setLocation((i%5*125) + 175, (c*100) + 100);
         	cnc[i] = new CodeNameCard(nextWord, "WHITE", i);
         	locations.add(i);
         }
@@ -110,7 +137,7 @@ public class Game extends JFrame {
         	cnc[index].setColor("BLACK");
         	locations.remove(r);
         }
-        
+    
         //The following buttons are the 25 cards in the game.
         cardButtons[0].addActionListener((ActionEvent event) -> {
         	try {
@@ -401,9 +428,23 @@ public class Game extends JFrame {
         	}
         });
         
+        redSM.addActionListener((ActionEvent event) -> {
+        	spyM.doClick();
+        });
+        blueSM.addActionListener((ActionEvent event) -> {
+        	spyM.doClick();
+        });
+        endTurn.addActionListener((ActionEvent event)->{
+        	ChangeTurn(0);
+        });
+        
         displayPanel.add(turnName);
+        displayPanel.add(redSM);
+        displayPanel.add(blueSM);
+        displayPanel.add(redTurn);
+        displayPanel.add(blueTurn);
         displayPanel.add(endTurn);
-        displayPanel.add(spyM);
+        //displayPanel.add(spyM);
         for(int i=0;i<NUMBER_OF_CARDS; i++) {
         	displayPanel.add(cardButtons[i]);
         }
@@ -446,9 +487,14 @@ public class Game extends JFrame {
 		currentTurn = 1-currentTurn;
 		if(currentTurn == 0) {
 			this.turnName.setText("RED's Turn");
+			redTurn.setVisible(true);
+			blueTurn.setVisible(false);
 		} else {
 			this.turnName.setText("BLUE's Turn");
+			redTurn.setVisible(false);
+			blueTurn.setVisible(true);
 		}
+		repaint();
 	}
 	
 	private String getTeam(int t) {
