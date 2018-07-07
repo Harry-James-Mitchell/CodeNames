@@ -27,19 +27,19 @@ public class MainMenu extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         
         JButton startButton = new JButton("Join Game");
-        startButton.setLocation(125, 50);
+        startButton.setLocation(125, 40);
         startButton.setSize(150,50);
         
         JButton instructionsButton = new JButton("How to play");
-        instructionsButton.setLocation(125, 150);
+        instructionsButton.setLocation(125, 120);
         instructionsButton.setSize(150,50);
         
         JButton creditsButton = new JButton("Credits");
-        creditsButton.setLocation(125, 220);
+        creditsButton.setLocation(125, 200);
         creditsButton.setSize(150,50);
         
         JButton quitButton = new JButton("Quit");
-        quitButton.setLocation(125, 320);
+        quitButton.setLocation(125, 280);
         quitButton.setSize(150,50);
         
         
