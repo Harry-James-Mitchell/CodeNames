@@ -24,14 +24,24 @@ public class FindGameMenu extends JFrame {
 	
 	public void initUI() {
 		JPanel displayPanel = new JPanel();
+		displayPanel.setLayout(null);
 		setTitle("Main Menu");
 		setSize(width, height);
 		setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         
         JButton toMainMenu = new JButton("Main Menu");
+        toMainMenu.setLocation(10, 10);
+        toMainMenu.setSize(100, 20);
+        
         JButton setSeed = new JButton("Start Game");
+        setSeed.setLocation(110, 120);
+        setSeed.setSize(150,75);
+        
         JTextField seed = new JTextField("");
+        seed.setLocation(110, 200);
+        seed.setSize(150, 20);
+        
         
         String[] args = new String[0];
         toMainMenu.addActionListener((ActionEvent event) -> {
