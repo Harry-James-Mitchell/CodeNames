@@ -1,8 +1,11 @@
 package gameLogic;
 
+import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
@@ -83,40 +86,53 @@ public class Game extends JFrame {
         	locations.add(i);
         }
         
-        
-        
         //Assign all of red's cards
         for(int i=0; i<RED_CARDS; i++) {
-        	int index = rand.nextInt(locations.size());
-        	cnc[index].setColor("red");
-        	locations.remove(index);
+        	int r = rand.nextInt(locations.size());
+        	int index = locations.get(r);
+        	cnc[index].setColor("RED");
+        	locations.remove(r);
         }
         
+        System.out.print("\nblues:");
         //Assign all of blue's cards
         for(int i=0; i<BLUE_CARDS; i++) {
-        	int index = rand.nextInt(locations.size());
-        	cnc[index].setColor("blue");
-        	locations.remove(index);
+        	int r = rand.nextInt(locations.size());
+        	int index = locations.get(r);
+        	cnc[index].setColor("BLUE");
+        	locations.remove(r);
         }
         
         //Assign all the black cards
         for(int i=0; i<DEATH_CARDS; i++) {
-        	int index = rand.nextInt(locations.size());
-        	cnc[index].setColor("black");
-        	locations.remove(index);
+        	int r = rand.nextInt(locations.size());
+        	int index = locations.get(r);
+        	cnc[index].setColor("BLACK");
+        	locations.remove(r);
         }
         
-        //fill the remaining cards with the color white
-        while(!locations.isEmpty()) {
-        	int index = rand.nextInt(locations.size());
-            cnc[index].setColor("White");
-            locations.remove(index);
-        }
+        //The following buttons are the 25 cards in the game.
+        cardButtons[0].addActionListener((ActionEvent event) -> {
+        	
+        });
         
-        
+        JButton spyM = new JButton("SpyMaster");
+        spyM.addActionListener((ActionEvent event) -> {
+        	for(int i=0; i< NUMBER_OF_CARDS; i++) {
+        		try {
+        			Field field = Class.forName("java.awt.Color").getField(cnc[i].getColor());
+            		Color color = (Color)field.get(null);
+            		cardButtons[i].setBackground(color);
+        		} catch (Exception e) {
+        			JOptionPane.showMessageDialog(null, "Unable to fetch colors. :(");
+        			break;
+        		}
+        	}
+        });
         
         displayPanel.add(currentTurn);
         displayPanel.add(endTurn);
+        displayPanel.add(spyM);
         for(int i=0;i<NUMBER_OF_CARDS; i++) {
         	displayPanel.add(cardButtons[i]);
         }
