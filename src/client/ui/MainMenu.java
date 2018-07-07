@@ -3,6 +3,7 @@ package client.ui;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -25,6 +26,8 @@ public class MainMenu extends JFrame {
 		setSize(width, height);
 		setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        ImageIcon icon = new ImageIcon("pics/Frame.png");
+        setIconImage(icon.getImage());
         
         JButton startButton = new JButton("Join Game");
         startButton.setLocation(125, 40);

@@ -34,6 +34,8 @@ public class HowToPlayMenu extends JFrame {
 		setSize(WIDTH, HEIGHT);
 		setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        ImageIcon icon = new ImageIcon("pics/Frame.png");
+        setIconImage(icon.getImage());
         
         String[] howTo = new String[]{"<html>","<html>","<html>","<html>","<html>","<html>","<html>","<html>","<html>","<html>"};
         int i = 0;
