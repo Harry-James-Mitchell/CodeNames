@@ -3,6 +3,7 @@ package client.ui;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -35,6 +36,8 @@ public class CreditsMenu extends JFrame{
 		setSize(width, height);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		ImageIcon icon = new ImageIcon("pics/Frame.png");
+        setIconImage(icon.getImage());
 		
 		
 		JLabel jer = new JLabel("Jeremiah Brusegaard");

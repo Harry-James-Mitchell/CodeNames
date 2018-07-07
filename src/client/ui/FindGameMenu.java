@@ -3,6 +3,7 @@ package client.ui;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -29,6 +30,8 @@ public class FindGameMenu extends JFrame {
 		setSize(width, height);
 		setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        ImageIcon icon = new ImageIcon("pics/Frame.png");
+        setIconImage(icon.getImage());
         
         JButton toMainMenu = new JButton("Main Menu");
         toMainMenu.setLocation(10, 10);
