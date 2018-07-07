@@ -30,6 +30,7 @@ public class Game extends JFrame {
 	private final int BLUE_CARDS = 8;
 	private final int DEATH_CARDS = 1;
 	private int currentTurn = 0;
+	private JLabel turnName = new JLabel();
 	
 	public Game(){
 		initUI();
@@ -37,6 +38,7 @@ public class Game extends JFrame {
 	
 	private void newGame() {
 		currentTurn = 0;
+		turnName.setText("RED's Turn");
 	}
 	
 	private void initUI() {
@@ -65,11 +67,9 @@ public class Game extends JFrame {
         }
         
         JButton endTurn = new JButton("End Turn");
-        JLabel currentTurn = new JLabel("Red's turn");
         ImageIcon redSpy = new ImageIcon("pics/RedSpy.png");
         ImageIcon blueSpy = new ImageIcon("pics/BlueSpy.png");
         
-        currentTurn.setLocation((width/2)-15, 25);
         endTurn.setLocation(width-75, 25);
         
         //assign a word to every button and keep track of them using the codeNameCard object
@@ -83,7 +83,7 @@ public class Game extends JFrame {
         	cardButtons[i] = new JButton(nextWord);
         	cardButtons[i].setSize(100, 25);
         	cardButtons[i].setLocation((i%5)*100 + 33, (i%5)*100 + 200);
-        	cnc[i] = new CodeNameCard(nextWord, "white", i);
+        	cnc[i] = new CodeNameCard(nextWord, "WHITE", i);
         	locations.add(i);
         }
         
@@ -401,7 +401,7 @@ public class Game extends JFrame {
         	}
         });
         
-        displayPanel.add(currentTurn);
+        displayPanel.add(turnName);
         displayPanel.add(endTurn);
         displayPanel.add(spyM);
         for(int i=0;i<NUMBER_OF_CARDS; i++) {
@@ -413,6 +413,52 @@ public class Game extends JFrame {
 	
 	//This method takes in the color of the clicked button and determines if the turn should be updated
 	private void updateTurn(String C) {
+		if(C.equals("BLACK")) {
+			this.endGame();
+		}
+		else if(C.equals("WHITE")) {
+			this.ChangeTurn(currentTurn);
+			String team = this.getTeam(currentTurn);
+			JOptionPane.showMessageDialog(null, "Your team picked a white square.\nIt is now "+team+"'s turn");
+			
+		}
+		else if(C.equals("RED")) {
+			if(currentTurn == 1) {
+				JOptionPane.showMessageDialog(null, "You clicked the enemy team's square.\n It is now their turn.");
+				this.ChangeTurn(currentTurn);
+			}
+		}
+		else if(C.equals("BLUE")) {
+			if(currentTurn == 0) {
+				JOptionPane.showMessageDialog(null, "You clicked the enemy team's square.\n It is now their turn.");
+				this.ChangeTurn(currentTurn);
+			}
+		}
+		else {
+			JOptionPane.showMessageDialog(null, "ERROR, the button you clicked was not assigned a color. :(");
+			this.leavePage();
+			String[] args = new String[0];
+			MainMenu.main(args);
+		}
+	}
+	
+	private void ChangeTurn(int t) {
+		currentTurn = 1-currentTurn;
+		if(currentTurn == 0) {
+			this.turnName.setText("RED's Turn");
+		} else {
+			this.turnName.setText("BLUE's Turn");
+		}
+	}
+	
+	private String getTeam(int t) {
+		if(t == 0) {
+			return "RED";
+		}
+		return "Blue";
+	}
+	
+	private void endGame() {
 		
 	}
 	
