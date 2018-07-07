@@ -33,6 +33,10 @@ public class Game extends JFrame {
 	private JLabel turnName = new JLabel();
 	private JLabel redTurn;
 	private JLabel blueTurn;
+	private int redScore;
+	private int blueScore;
+	private JLabel redP;
+	private JLabel blueP;
 	
 	public Game(){
 		initUI();
@@ -41,6 +45,8 @@ public class Game extends JFrame {
 	private void newGame() {
 		currentTurn = 0;
 		turnName.setText("RED's Turn");
+		redScore = RED_CARDS;
+		blueScore = BLUE_CARDS;
 	}
 	
 	private void initUI() {
@@ -51,6 +57,7 @@ public class Game extends JFrame {
 		setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 //        this.setLayout(null);
+        this.newGame();
         
         File file = new File("textFiles/Words.txt");//This text file contains all of the words used in the game
         Random rand = new Random(seed); //We use the room code as the seed so everyone has the same board.
@@ -113,6 +120,13 @@ public class Game extends JFrame {
         	cnc[i] = new CodeNameCard(nextWord, "WHITE", i);
         	locations.add(i);
         }
+        
+        redP = new JLabel(redScore+"");
+        redP.setLocation(60, 510);
+        redP.setSize(20, 20);
+        blueP = new JLabel(blueScore+"");
+        blueP.setSize(20, 20);
+        blueP.setLocation(925, 510);
         
         //Assign all of red's cards
         for(int i=0; i<RED_CARDS; i++) {
@@ -444,6 +458,8 @@ public class Game extends JFrame {
         displayPanel.add(redTurn);
         displayPanel.add(blueTurn);
         displayPanel.add(endTurn);
+        displayPanel.add(redP);
+        displayPanel.add(blueP);
         //displayPanel.add(spyM);
         for(int i=0;i<NUMBER_OF_CARDS; i++) {
         	displayPanel.add(cardButtons[i]);
@@ -455,24 +471,33 @@ public class Game extends JFrame {
 	//This method takes in the color of the clicked button and determines if the turn should be updated
 	private void updateTurn(String C) {
 		if(C.equals("BLACK")) {
-			this.endGame();
+			this.endGame(C);
 		}
 		else if(C.equals("WHITE")) {
 			this.ChangeTurn(currentTurn);
 			String team = this.getTeam(currentTurn);
 			JOptionPane.showMessageDialog(null, "Your team picked a white square.\nIt is now "+team+"'s turn");
-			
 		}
 		else if(C.equals("RED")) {
+			redScore--;
 			if(currentTurn == 1) {
 				JOptionPane.showMessageDialog(null, "You clicked the enemy team's square.\n It is now their turn.");
 				this.ChangeTurn(currentTurn);
 			}
+			redP.setText(redScore+"");
+			if(redScore == 0) {
+				this.endGame(C);
+			}
 		}
 		else if(C.equals("BLUE")) {
+			blueScore--;
 			if(currentTurn == 0) {
 				JOptionPane.showMessageDialog(null, "You clicked the enemy team's square.\n It is now their turn.");
 				this.ChangeTurn(currentTurn);
+			}
+			blueP.setText(blueScore+"");
+			if(blueScore == 0) {
+				this.endGame(C);
 			}
 		}
 		else {
@@ -504,8 +529,46 @@ public class Game extends JFrame {
 		return "Blue";
 	}
 	
-	private void endGame() {
-		
+	private void endGame(String c) {
+		if(c.equals("BLACK")) {
+			ImageIcon death = new ImageIcon("pic/Death.png");
+			if(currentTurn == 1) {
+				JOptionPane.showMessageDialog(
+	                    null,
+	                    "You picked the death card and die.\n The RED team wins",
+	                    "SAD", JOptionPane.INFORMATION_MESSAGE,
+	                    death);
+			} else {
+				JOptionPane.showMessageDialog(
+	                    null,
+	                    "You picked the death card and die.\n The BLUE team wins",
+	                    "SAD", JOptionPane.INFORMATION_MESSAGE,
+	                    death);
+			}
+		}
+		else if(c.equals("BLUE")) {
+			ImageIcon blue = new ImageIcon("pic/BlueSpy");
+			JOptionPane.showMessageDialog(
+                    null,
+                    "BLUE team found all of their words and wins the game!",
+                    "Good Job", JOptionPane.INFORMATION_MESSAGE,
+                    blue);
+		} 
+		else if(c.equals("RED")) {
+			ImageIcon red = new ImageIcon("pic/RedSpy");
+			JOptionPane.showMessageDialog(
+                    null,
+                    "RED team found all of their words and wins the game!",
+                    "Good Job", JOptionPane.INFORMATION_MESSAGE,
+                    red);
+		} 
+		else {
+			JOptionPane.showMessageDialog(null, "An error occured when the game was sent to a winning state without a winner.\n Taking you back to the main menu");
+			
+		}
+		this.leavePage();
+		String[] args = new String[0];
+		MainMenu.main(args);
 	}
 	
 	private void leavePage() {
