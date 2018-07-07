@@ -43,6 +43,7 @@ public class Game extends JFrame {
 	
 	private void initUI() {
 		JPanel displayPanel = new JPanel();
+		displayPanel.setLayout(null);
 		setTitle("CodeNames");
 		setSize(width, height);
 		setLocationRelativeTo(null);
@@ -76,13 +77,16 @@ public class Game extends JFrame {
         JButton[] cardButtons = new JButton[NUMBER_OF_CARDS];
         CodeNameCard[] cnc = new CodeNameCard[NUMBER_OF_CARDS];
         ArrayList<Integer> locations = new ArrayList<Integer>();
+        int c =-1;
         for(int i=0; i<NUMBER_OF_CARDS; i++){
+        	if(i%5 ==0) c++;
         	int index = rand.nextInt(words.size());
         	String nextWord = words.get(index);
         	words.remove(index);
         	cardButtons[i] = new JButton(nextWord);
-        	cardButtons[i].setSize(100, 25);
-        	cardButtons[i].setLocation((i%5)*100 + 33, (i%5)*100 + 200);
+        	cardButtons[i].setSize(125, 25);
+        	System.out.println(c);
+        	cardButtons[i].setLocation((i%5*125) + 175, (c*100) + 100);
         	cnc[i] = new CodeNameCard(nextWord, "WHITE", i);
         	locations.add(i);
         }
