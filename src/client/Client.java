@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class Client {
 
-	private static final int PORT = 8080;
+	private static final int PORT = 5555;
 	private static Socket serverConnection;
 	public static void main(String args[]) {
 		
@@ -19,6 +19,8 @@ public class Client {
 		serverConnection = null;
 		try {
 			serverConnection = new Socket(serverIp, PORT);
+			System.out.println();
+			System.out.println("Connected to " + serverIp + "!");
 			
 		}catch (Exception e) {
 			System.err.println("Unable to resolve " + serverIp + ":" + PORT);
