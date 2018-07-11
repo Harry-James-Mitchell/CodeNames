@@ -6,6 +6,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Random;
 
 public class Server {
 
@@ -26,13 +27,14 @@ public class Server {
 		}catch(Exception e) {
 			System.err.println("Could not start server on port " + PORT);
 		}
-		clientMap = new HashMap<>();
+		clientMap = new HashMap<>(25);
 		while(true) {
 			Socket clientSocket = null;
 			try {
 				clientSocket = server.accept();
-				clientMap.put(genClientID(), clientSocket);
-				System.out.println("Client "  + clientSocket.getInetAddress() + ":" + clientSocket.getPort() + " connected");
+				int clientID = genClientID();
+				clientMap.put(clientID, clientSocket);
+				System.out.println("Client " + clientID + " " +  clientSocket.getInetAddress() + ":" + clientSocket.getPort() + " connected");
 			}catch (Exception e) {
 				if(clientSocket != null) {
 					System.err.println("Client "  + clientSocket.getInetAddress() + ":" + clientSocket.getPort() + " unable to connect");
@@ -43,8 +45,12 @@ public class Server {
 		}
 	}
 	private static Integer genClientID() {
-		
-		return 0;
+		Integer id = 0;
+		Random random = new Random();
+		while(clientMap.containsKey(id)) {
+			id = random.nextInt(99999);
+		}
+		return id;
 	}
 }
 class ClientHandler implements Runnable{
