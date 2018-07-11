@@ -20,7 +20,6 @@ public class Server {
 	 
 	        BufferedReader sc = new BufferedReader(new InputStreamReader(url_name.openStream()));
 	        systemipaddress = sc.readLine().trim();
-//	        System.out.println("Public IP Address: " + systemipaddress +"\n");
 	    
 			System.out.println("Starting server .... listening on " + systemipaddress + ":" + PORT);
 			
@@ -29,12 +28,17 @@ public class Server {
 		}
 		clientMap = new HashMap<>();
 		while(true) {
-			
+			Socket clientSocket = null;
 			try {
-				Socket clientSocket = server.accept();
+				clientSocket = server.accept();
 				clientMap.put(genClientID(), clientSocket);
+				System.out.println("Client "  + clientSocket.getInetAddress() + ":" + clientSocket.getPort() + " connected");
 			}catch (Exception e) {
-				System.err.println("Client ");
+				if(clientSocket != null) {
+					System.err.println("Client "  + clientSocket.getInetAddress() + ":" + clientSocket.getPort() + " unable to connect");
+				}else {
+					System.err.println("Client unable to connect... null connection");
+				}
 			}
 		}
 	}
