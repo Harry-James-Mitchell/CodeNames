@@ -39,7 +39,10 @@ public class Client {
 	public boolean checkConnection() {
 		return true;
 	}
-	
+	public static void main(String args[]) {
+		Client client = new Client("localhost");
+		while(true);
+	}
 }
 class ServerHandler implements Runnable{
 	private Socket serverConnection;
@@ -61,11 +64,11 @@ class ServerHandler implements Runnable{
 			OutputStreamWriter out = new OutputStreamWriter(this.serverConnection.getOutputStream(), StandardCharsets.UTF_8);
 			out.write(json.toString());
 			out.flush();
-			out.close();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 	}
+	
 }

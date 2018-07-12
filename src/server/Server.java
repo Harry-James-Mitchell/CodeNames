@@ -80,21 +80,26 @@ class ClientHandler implements Runnable{
 	}
 	@Override
 	public void run() {
+		InputStreamReader inputStreamReader = null;
+		Scanner in = null;
+		try {
+			inputStreamReader = new InputStreamReader(this.serverConnection.getInputStream(),StandardCharsets.UTF_8);
+			in = new Scanner(inputStreamReader);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 		while(true) {
-			BufferedInputStream bufferedInputStream;
+			
 			try {
-				bufferedInputStream = new BufferedInputStream(this.serverConnection.getInputStream());
-				Scanner in = new Scanner(bufferedInputStream);
-				String jsonStr = "";
-				while(in.hasNextLine()) {
-					jsonStr += in.nextLine();
-				}
-				in.close();
+				String jsonStr = in.nextLine();
+				
 				JSONObject jsonObject = new JSONObject(jsonStr);
 				System.out.println(jsonObject.get("type") + " " + " msg: " + jsonObject.get("msg"));
-			} catch (IOException | JSONException e) {
+			} catch (NullPointerException | JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				break;
+				
 			}
 		}
 	}
