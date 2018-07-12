@@ -29,8 +29,8 @@ public class ServerUI extends JFrame {
         JLabel PortLabel = new JLabel("Your server port is: "+port);
         IPLabel.setLocation(50, HEIGHT-300);
         PortLabel.setLocation(50, HEIGHT-200);
-        IPLabel.setSize(100, 100);
-        PortLabel.setSize(100, 100);
+        IPLabel.setSize(300, 100);
+        PortLabel.setSize(300, 100);
         
         displayPanel.add(IPLabel);
         displayPanel.add(PortLabel);
