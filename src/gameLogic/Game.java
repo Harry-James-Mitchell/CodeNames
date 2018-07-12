@@ -582,6 +582,10 @@ public class Game extends JFrame {
 		this.setVisible(false);
 	}
 	
+	public long getSeed() {
+		return this.seed;
+	}
+	
 	public static void main(String[] args, String code) {
 		seed = Long.parseLong(code);
 		EventQueue.invokeLater(() -> {
