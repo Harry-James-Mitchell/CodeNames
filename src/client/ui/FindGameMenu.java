@@ -37,14 +37,14 @@ public class FindGameMenu extends JFrame {
         toMainMenu.setLocation(10, 10);
         toMainMenu.setSize(100, 20);
         
-        JButton setSeed = new JButton("Start Game");
-        setSeed.setLocation(110, 120);
-        setSeed.setSize(150,75);
+        JButton joinIP = new JButton("Start Game");
+        joinIP.setLocation(110, 120);
+        joinIP.setSize(150,75);
         
-        JTextField seed = new JTextField("");
-        seed.setLocation(110, 200);
-        seed.setSize(150, 20);
-        seed.setText(null);
+        JTextField ip = new JTextField("");
+        ip.setLocation(110, 200);
+        ip.setSize(150, 20);
+        ip.setText(null);
         
         
         String[] args = new String[0];
@@ -53,19 +53,20 @@ public class FindGameMenu extends JFrame {
         	leavePage();
         });
         
-		setSeed.addActionListener((ActionEvent event) -> {
-        	String roomCode = seed.getText();
+        joinIP.addActionListener((ActionEvent event) -> {
+        	String roomCode = ip.getText();
         	if(roomCode.isEmpty()) {
-        		JOptionPane.showMessageDialog(null, "You must enter a room code to join a game!");
+        		JOptionPane.showMessageDialog(null, "You must enter an ip to join a game!");
         	} else {
+        		//TODO check bad IP
         		this.leavePage();
         		Game.main(args, roomCode);
         	}
         });
         
         displayPanel.add(toMainMenu);
-        displayPanel.add(seed);
-        displayPanel.add(setSeed);
+        displayPanel.add(ip);
+        displayPanel.add(joinIP);
         this.add(displayPanel);
         this.setVisible(true);
 	}
