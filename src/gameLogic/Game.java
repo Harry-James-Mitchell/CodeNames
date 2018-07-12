@@ -17,10 +17,13 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import client.Client;
 import client.ui.MainMenu;
 
 public class Game extends JFrame {
-
+	
+	private Client server;
+	
 	private static final long serialVersionUID = 1L;
 	private final int width = 1000;
 	private final int height = 700;
@@ -38,8 +41,11 @@ public class Game extends JFrame {
 	private JLabel redP;
 	private JLabel blueP;
 	
+	
 	public Game(){
+		newGame();
 		initUI();
+		server = new Client();
 	}
 	
 	private void newGame() {
@@ -57,7 +63,7 @@ public class Game extends JFrame {
 		setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 //        this.setLayout(null);
-        this.newGame();
+        
         
         File file = new File("textFiles/Words.txt");//This text file contains all of the words used in the game
         Random rand = new Random(seed); //We use the room code as the seed so everyone has the same board.
