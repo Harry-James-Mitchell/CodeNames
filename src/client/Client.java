@@ -24,6 +24,7 @@ public class Client {
 			System.err.println("Unable to resolve " + serverIp + ":" + PORT);
 			e.printStackTrace();
 		}
+		
 	}
 	public Socket getSocket() {
 		return this.serverConnection;

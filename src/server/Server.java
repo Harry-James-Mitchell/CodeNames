@@ -16,9 +16,10 @@ public class Server {
 	private static HashMap<Integer, Socket> clientMap;
 	private static ArrayList<Thread> clientThreads;
 	public static void main(String args[]) {
+		String systemipaddress = "";
 		try {
 			server = new ServerSocket(PORT);
-			String systemipaddress = "";
+			
 	        URL url_name = new URL("http://bot.whatismyipaddress.com");
 	 
 	        BufferedReader sc = new BufferedReader(new InputStreamReader(url_name.openStream()));
@@ -32,7 +33,7 @@ public class Server {
 		}
 		clientMap = new HashMap<>(25);
 		clientThreads = new ArrayList<>();
-		ServerUI.main(null);
+		ServerUI.main(null,systemipaddress , PORT);
 		while(true) {
 			Socket clientSocket = null;
 			try {
