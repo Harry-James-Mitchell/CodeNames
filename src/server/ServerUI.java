@@ -6,6 +6,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 public class ServerUI extends JFrame {
 
@@ -25,15 +26,26 @@ public class ServerUI extends JFrame {
         ImageIcon icon = new ImageIcon("pics/Frame.png");
         setIconImage(icon.getImage());
         
-        JLabel IPLabel = new JLabel("Your server IP is: "+IP);
-        JLabel PortLabel = new JLabel("Your server port is: "+port);
-        IPLabel.setLocation(50, HEIGHT-300);
-        PortLabel.setLocation(50, HEIGHT-200);
-        IPLabel.setSize(300, 100);
-        PortLabel.setSize(300, 100);
+        JLabel IPPrefix = new JLabel("Your server IP is:");
+        JLabel PortPrefix = new JLabel("Your server port is:");
+        IPPrefix.setSize(125, 50);
+        PortPrefix.setSize(125, 50);
+        IPPrefix.setLocation(50, 50);
+        PortPrefix.setLocation(50, 150);
         
-        displayPanel.add(IPLabel);
-        displayPanel.add(PortLabel);
+        JTextField IPText = new JTextField(IP);
+        JTextField PortText = new JTextField(""+port);
+        IPText.setLocation(185, 50);
+        PortText.setLocation(185, 150);
+        IPText.setSize(100, 50);
+        PortText.setSize(100, 50);
+        IPText.setEditable(false);
+        PortText.setEditable(false);
+        
+        displayPanel.add(IPPrefix);
+        displayPanel.add(PortPrefix);
+        displayPanel.add(IPText);
+        displayPanel.add(PortText);
         this.add(displayPanel);
         this.setVisible(true);
 	}
@@ -46,5 +58,4 @@ public class ServerUI extends JFrame {
             mm.setVisible(true);
         });
 	}
-
 }
