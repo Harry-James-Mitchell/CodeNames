@@ -1,5 +1,6 @@
 package server;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -12,6 +13,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.Scanner;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -78,15 +80,26 @@ class ClientHandler implements Runnable{
 	}
 	@Override
 	public void run() {
+		InputStreamReader inputStreamReader = null;
+		Scanner in = null;
+		try {
+			inputStreamReader = new InputStreamReader(this.serverConnection.getInputStream(),StandardCharsets.UTF_8);
+			in = new Scanner(inputStreamReader);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 		while(true) {
-			ObjectInputStream ois;
+			
 			try {
-				ois = new ObjectInputStream(this.serverConnection.getInputStream());
-				JSONObject jsonObject = (JSONObject) ois.readObject();
+				String jsonStr = in.nextLine();
+				
+				JSONObject jsonObject = new JSONObject(jsonStr);
 				System.out.println(jsonObject.get("type") + " " + " msg: " + jsonObject.get("msg"));
-			} catch (IOException | ClassNotFoundException | JSONException e) {
+			} catch (NullPointerException | JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				break;
+				
 			}
 		}
 	}
