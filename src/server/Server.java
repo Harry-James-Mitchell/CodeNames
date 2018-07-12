@@ -1,13 +1,20 @@
 package server;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class Server {
 
@@ -63,13 +70,24 @@ public class Server {
 	}
 }
 class ClientHandler implements Runnable{
-
-	public ClientHandler(Socket socket, int clientId) {
-		
+	private Socket serverConnection;
+	private int clientID;
+	public ClientHandler(Socket socket, int clientID) {
+		this.serverConnection = socket;
+		this.clientID = clientID;
 	}
 	@Override
 	public void run() {
-		
+		while(true) {
+			ObjectInputStream ois;
+			try {
+				ois = new ObjectInputStream(this.serverConnection.getInputStream());
+				JSONObject jsonObject = (JSONObject) ois.readObject();
+				System.out.println(jsonObject.get("type") + " " + " msg: " + jsonObject.get("msg"));
+			} catch (IOException | ClassNotFoundException | JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
-	
 }

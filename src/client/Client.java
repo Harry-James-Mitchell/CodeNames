@@ -1,11 +1,15 @@
 package client;
 
+import java.io.OutputStreamWriter;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
+
+import org.json.JSONObject;
 
 public class Client {
 
 	private static final int PORT = 5555;
-	private static Socket serverConnection;
+	private Socket serverConnection;
 	
 	public Client(String serverIp) {
 		//TODO Add error checking for bad ip
@@ -15,11 +19,13 @@ public class Client {
 //		Scanner in = new Scanner(System.in);
 //		String serverIp = in.nextLine();
 //		in.close();
-		serverConnection = null;
+		this.serverConnection = null;
 		try {
-			serverConnection = new Socket(serverIp, PORT);
+			this.serverConnection = new Socket(serverIp, PORT);
 			System.out.println();
 			System.out.println("Connected to " + serverIp + "!");
+			Thread serverHandler = new Thread(new ServerHandler(this.serverConnection));
+			serverHandler.start();
 		}catch (Exception e) {
 			System.err.println("Unable to resolve " + serverIp + ":" + PORT);
 			e.printStackTrace();
@@ -34,4 +40,32 @@ public class Client {
 		return true;
 	}
 	
+}
+class ServerHandler implements Runnable{
+	private Socket serverConnection;
+	public ServerHandler(Socket socket) {
+		this.serverConnection = socket;
+	}
+	@Override
+	public void run() {
+		sendMessage("testing");
+		while(true) {
+			
+		}
+	}
+	private void sendMessage(String msg) {
+		JSONObject json = new JSONObject();
+		try {
+			json.put("type", "MSG");
+			json.put("msg", msg);
+			OutputStreamWriter out = new OutputStreamWriter(this.serverConnection.getOutputStream(), StandardCharsets.UTF_8);
+			out.write(json.toString());
+			out.flush();
+			out.close();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 }
