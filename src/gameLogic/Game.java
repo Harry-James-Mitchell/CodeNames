@@ -42,10 +42,10 @@ public class Game extends JFrame {
 	private JLabel blueP;
 	
 	
-	public Game(){
-		newGame();
+	public Game(String ip){
+		
 		initUI();
-//		server = new Client();
+		server = new Client(ip);
 	}
 	
 	private void newGame() {
@@ -64,7 +64,7 @@ public class Game extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 //        this.setLayout(null);
         
-        
+        this.newGame();
         File file = new File("textFiles/Words.txt");//This text file contains all of the words used in the game
         Random rand = new Random(seed); //We use the room code as the seed so everyone has the same board.
         
@@ -586,10 +586,11 @@ public class Game extends JFrame {
 		return this.seed;
 	}
 	
-	public static void main(String[] args, String code) {
-		seed = Long.parseLong(code);
+	public static void main(String[] args, String ip) {
+//		seed = Long.parseLong(ip);
+		seed = Integer.toUnsignedLong(99999999);
 		EventQueue.invokeLater(() -> {
-            Game mm = new Game();
+            Game mm = new Game(ip);
             mm.setVisible(true);
         });
 	}

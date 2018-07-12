@@ -1,7 +1,6 @@
 package client;
 
 import java.net.Socket;
-import java.util.Scanner;
 
 public class Client {
 
@@ -21,10 +20,17 @@ public class Client {
 			serverConnection = new Socket(serverIp, PORT);
 			System.out.println();
 			System.out.println("Connected to " + serverIp + "!");
-					
 		}catch (Exception e) {
 			System.err.println("Unable to resolve " + serverIp + ":" + PORT);
 			e.printStackTrace();
 		}
 	}
+	public Socket getSocket() {
+		return this.serverConnection;
+	}
+	//TODO check server is still connected
+	public boolean checkConnection() {
+		return true;
+	}
+	
 }
