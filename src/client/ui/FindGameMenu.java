@@ -53,7 +53,7 @@ public class FindGameMenu extends JFrame {
         	leavePage();
         });
         
-        setSeed.addActionListener((ActionEvent event) -> {
+		setSeed.addActionListener((ActionEvent event) -> {
         	String roomCode = seed.getText();
         	if(roomCode.isEmpty()) {
         		JOptionPane.showMessageDialog(null, "You must enter a room code to join a game!");
