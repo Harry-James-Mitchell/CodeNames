@@ -1,5 +1,6 @@
 package client;
 
+import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
@@ -58,8 +59,8 @@ class ServerHandler implements Runnable{
 		try {
 			json.put("type", "MSG");
 			json.put("msg", msg);
-			OutputStreamWriter out = new OutputStreamWriter(this.serverConnection.getOutputStream(), StandardCharsets.UTF_8);
-			out.write(json.toString());
+			ObjectOutputStream out = new ObjectOutputStream(this.serverConnection.getOutputStream());
+			out.writeObject(json);
 			out.flush();
 			out.close();
 		} catch (Exception e) {
