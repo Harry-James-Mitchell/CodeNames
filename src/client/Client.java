@@ -1,9 +1,11 @@
 package client;
 
-import java.io.OutputStreamWriter;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.nio.charset.StandardCharsets;
+import java.util.Scanner;
 
 import org.json.JSONObject;
 
@@ -11,21 +13,31 @@ public class Client {
 
 	private static final int PORT = 5555;
 	private Socket serverConnection;
-	
+	private int clientID;
 	public Client(String serverIp) {
 		//TODO Add error checking for bad ip
 		//Potentially have user put in port
 				
-//		System.out.print("Please enter ip of server: ");
-//		Scanner in = new Scanner(System.in);
-//		String serverIp = in.nextLine();
-//		in.close();
 		this.serverConnection = null;
 		try {
 			this.serverConnection = new Socket(serverIp, PORT);
 			System.out.println();
 			System.out.println("Connected to " + serverIp + "!");
-			Thread serverHandler = new Thread(new ServerHandler(this.serverConnection));
+			this.clientID = -1;
+			Scanner in = new Scanner(new BufferedInputStream(this.serverConnection.getInputStream()));
+			JSONObject json = new JSONObject(in.nextLine());
+			if(json.getString("type")!= null && json.getString("type").equals("idAssign")) {
+				this.clientID = json.getInt("id");
+			}
+			if(clientID == -1) {
+				System.err.println("Unable to retrieve id from server");
+				this.serverConnection.close();
+				
+				System.exit(-1);
+			}
+			Thread serverHandler = new Thread(new ServerJSONSender(this.serverConnection,this.clientID));
+			Thread serverConnectionChecker = new Thread(new ServerConnectionStatus(this.serverConnection, this.clientID));
+			serverConnectionChecker.start();
 			serverHandler.start();
 		}catch (Exception e) {
 			System.err.println("Unable to resolve " + serverIp + ":" + PORT);
@@ -42,28 +54,32 @@ public class Client {
 	}
 	public static void main(String args[]) {
 		Client client = new Client("localhost");
-		while(true);
 	}
 }
-class ServerHandler implements Runnable{
+class ServerJSONSender implements Runnable{
 	private Socket serverConnection;
-	public ServerHandler(Socket socket) {
+	private int clientID;
+	public ServerJSONSender(Socket socket,int clientID) {
 		this.serverConnection = socket;
+		this.clientID = clientID;
 	}
 	@Override
 	public void run() {
-		sendMessage("testing");
+		Scanner in = new Scanner(System.in);
 		while(true) {
-			
+			System.out.print("Enter a message to the server:");
+			sendMessage(in.nextLine());
 		}
 	}
 	private void sendMessage(String msg) {
 		JSONObject json = new JSONObject();
 		try {
-			json.put("type", "MSG");
+			json.put("type", "msg");
+			json.put("id", this.clientID);
 			json.put("msg", msg);
-			PrintWriter out = new PrintWriter(this.serverConnection.getOutputStream());
-			out.write(json.toString());
+			
+			PrintWriter out = new PrintWriter(new BufferedOutputStream(this.serverConnection.getOutputStream()));
+			out.println(json.toString());
 			out.flush();
 			System.out.println("Sent JSON object");
 		} catch (Exception e) {
@@ -71,6 +87,49 @@ class ServerHandler implements Runnable{
 			e.printStackTrace();
 		}
 		
+	}
+	
+}
+class ServerConnectionStatus implements Runnable{
+	private Socket serverConnection;
+	private int clientID;
+	public ServerConnectionStatus(Socket socket,int clientID) {
+		this.serverConnection = socket;
+		this.clientID = clientID;
+	}
+	@Override
+	public void run() {
+		while(true) {
+			JSONObject json = new JSONObject();
+			try {
+				json.put("type", "connectChk");
+				json.put("id", this.clientID);
+				json.put("msg", "PING");
+				
+				PrintWriter out = new PrintWriter(new BufferedOutputStream(this.serverConnection.getOutputStream()));
+				out.println(json.toString());
+				out.flush();
+				Scanner in = new Scanner(new BufferedInputStream(this.serverConnection.getInputStream()));
+				JSONObject response = new JSONObject(in.nextLine());
+				if(!response.getString("type").equals(json.getString("type")) || response.getInt("id") != json.getInt("id") || !response.getString("msg").equals("PONG")) {
+					System.out.println("Connection closed... due to time out");
+					this.serverConnection.close();
+					System.exit(-1);
+				}
+//				System.out.println("\nPlayed Ping pong with server");
+				Thread.sleep(60000);
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.out.println("Connection closed... due to time out");
+				try {
+					this.serverConnection.close();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				System.exit(-1);
+			}
+		}
 	}
 	
 }

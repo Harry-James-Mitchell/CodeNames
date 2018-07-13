@@ -1,15 +1,14 @@
 package server;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
-import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -23,7 +22,7 @@ public class Server {
 	private static final int PORT = 5555;
 	private static ServerSocket server;
 	private static HashMap<Integer, Socket> clientMap;
-	private static ArrayList<Thread> clientThreads;
+	private static HashMap<Integer, Thread> clientThreads;
 	public static void main(String args[]) {
 		String systemipaddress = "";
 		try {
@@ -41,7 +40,7 @@ public class Server {
 			System.exit(0);
 		}
 		clientMap = new HashMap<>(25);
-		clientThreads = new ArrayList<>();
+		clientThreads = new HashMap<>(25);
 		ServerUI.main(null,systemipaddress , PORT);
 		while(true) {
 			Socket clientSocket = null;
@@ -50,8 +49,9 @@ public class Server {
 				int clientID = genClientID();
 				clientMap.put(clientID, clientSocket);
 				System.out.println("Client " + clientID + " " +  clientSocket.getInetAddress() + ":" + clientSocket.getPort() + " connected");
-				Thread client = new Thread(new ClientHandler(clientSocket, clientID));
-				clientThreads.add(client);
+				sendClientID(clientSocket, clientID);
+				Thread client = new Thread(new ClientJSONReciever(clientSocket, clientID));
+				clientThreads.put(clientID, client);
 				client.start();
 			}catch (Exception e) {
 				if(clientSocket != null) {
@@ -62,6 +62,22 @@ public class Server {
 			}
 		}
 	}
+	private static void sendClientID(Socket client,int clientID) {
+		
+		try {
+			JSONObject json = new JSONObject();
+			PrintWriter out = null;
+			json.put("type", "idAssign");
+			json.put("id", clientID);
+			json.put("msg", JSONObject.NULL);
+			out = new PrintWriter(new BufferedOutputStream(client.getOutputStream()));
+			out.println(json.toString());
+			out.flush();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
 	private static Integer genClientID() {
 		Integer id = 0;
 		Random random = new Random();
@@ -70,11 +86,23 @@ public class Server {
 		}
 		return id;
 	}
+	public static void sendJSON(Socket socket, JSONObject json) {
+		PrintWriter out;
+		try {
+			out = new PrintWriter(new BufferedOutputStream(socket.getOutputStream()));
+			out.println(json.toString());
+			out.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 }
-class ClientHandler implements Runnable{
+class ClientJSONReciever implements Runnable{
 	private Socket serverConnection;
 	private int clientID;
-	public ClientHandler(Socket socket, int clientID) {
+	public ClientJSONReciever(Socket socket, int clientID) {
 		this.serverConnection = socket;
 		this.clientID = clientID;
 	}
@@ -83,7 +111,7 @@ class ClientHandler implements Runnable{
 		System.out.println("Running client " + this.clientID);
 		Scanner in = null;
 		try {
-			in = new Scanner(this.serverConnection.getInputStream());
+			in = new Scanner(new BufferedInputStream(this.serverConnection.getInputStream()));
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -91,13 +119,22 @@ class ClientHandler implements Runnable{
 			
 			try {
 //				System.out.println(in.next());
-				
+				if(!in.hasNextLine()) continue;
 				String jsonStr = in.nextLine();
-				if(jsonStr.equals("")) continue;
-				System.out.println(jsonStr);
-//				JSONObject jsonObject = new JSONObject(jsonStr);
-//				System.out.println(jsonObject.get("type") + " " + " msg: " + jsonObject.get("msg"));
-			} catch (NullPointerException e) {
+				JSONObject json = new JSONObject(jsonStr);
+				switch (json.getString("type")) {
+				case "msg":
+					System.out.println("Client " + json.getInt("id") + ": " + json.get(json.getString("type")));
+					break;
+				case "connectChk":
+					json.put("msg", "PONG");
+					Server.sendJSON(this.serverConnection, json);
+					break;
+				default:
+					break;
+				}
+				
+			} catch (NullPointerException | JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 				break;
