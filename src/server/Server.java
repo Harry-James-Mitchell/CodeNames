@@ -25,6 +25,7 @@ public class Server {
 	private static HashMap<Integer, Thread> clientThreads;
 	public static void main(String args[]) {
 		String systemipaddress = "";
+		long seed = new Random().nextLong();
 		try {
 			server = new ServerSocket(PORT);
 			
@@ -42,6 +43,7 @@ public class Server {
 		clientMap = new HashMap<>(25);
 		clientThreads = new HashMap<>(25);
 		ServerUI.main(null,systemipaddress , PORT);
+		
 		while(true) {
 			Socket clientSocket = null;
 			try {
@@ -50,6 +52,7 @@ public class Server {
 				clientMap.put(clientID, clientSocket);
 				System.out.println("Client " + clientID + " " +  clientSocket.getInetAddress() + ":" + clientSocket.getPort() + " connected");
 				sendClientID(clientSocket, clientID);
+				sendClientSeed(clientSocket, clientID, seed);
 				Thread client = new Thread(new ClientJSONReciever(clientSocket, clientID));
 				clientThreads.put(clientID, client);
 				client.start();
@@ -70,6 +73,23 @@ public class Server {
 			json.put("type", "idAssign");
 			json.put("id", clientID);
 			json.put("msg", JSONObject.NULL);
+			out = new PrintWriter(new BufferedOutputStream(client.getOutputStream()));
+			out.println(json.toString());
+			out.flush();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+private static void sendClientSeed(Socket client,int clientID,long seed) {
+		
+		try {
+			JSONObject json = new JSONObject();
+			PrintWriter out = null;
+			json.put("type", "seedAssign");
+			json.put("id", clientID);
+			json.put("msg", JSONObject.NULL);
+			json.put("seed", seed);
 			out = new PrintWriter(new BufferedOutputStream(client.getOutputStream()));
 			out.println(json.toString());
 			out.flush();

@@ -14,6 +14,7 @@ public class Client {
 	private static final int PORT = 5555;
 	private Socket serverConnection;
 	private int clientID;
+	private long seed;
 	public Client(String serverIp) {
 		//TODO Add error checking for bad ip
 		//Potentially have user put in port
@@ -24,10 +25,15 @@ public class Client {
 			System.out.println();
 			System.out.println("Connected to " + serverIp + "!");
 			this.clientID = -1;
+			this.seed = -1;
 			Scanner in = new Scanner(new BufferedInputStream(this.serverConnection.getInputStream()));
 			JSONObject json = new JSONObject(in.nextLine());
 			if(json.getString("type")!= null && json.getString("type").equals("idAssign")) {
 				this.clientID = json.getInt("id");
+			}
+			json = new JSONObject(in.nextLine());
+			if(json.getString("type")!= null && json.getString("type").equals("seedAssign")) {
+				this.seed = json.getLong("seed");
 			}
 			if(clientID == -1) {
 				System.err.println("Unable to retrieve id from server");
@@ -35,6 +41,13 @@ public class Client {
 				
 				System.exit(-1);
 			}
+			if(seed == -1) {
+				System.err.println("Unable to retrieve seed from server");
+				this.serverConnection.close();
+				
+				System.exit(-1);
+			}
+			System.out.println("Seed is " + seed);
 			Thread serverHandler = new Thread(new ServerJSONSender(this.serverConnection,this.clientID));
 			Thread serverConnectionChecker = new Thread(new ServerConnectionStatus(this.serverConnection, this.clientID));
 			serverConnectionChecker.start();
@@ -54,6 +67,9 @@ public class Client {
 	}
 	public static void main(String args[]) {
 		Client client = new Client("localhost");
+	}
+	public long getSeed() {
+		return this.seed;
 	}
 }
 class ServerJSONSender implements Runnable{
@@ -81,7 +97,6 @@ class ServerJSONSender implements Runnable{
 			PrintWriter out = new PrintWriter(new BufferedOutputStream(this.serverConnection.getOutputStream()));
 			out.println(json.toString());
 			out.flush();
-			System.out.println("Sent JSON object");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
