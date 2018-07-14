@@ -42,10 +42,11 @@ public class Game extends JFrame {
 	private JLabel blueP;
 	
 	
-	public Game(String ip){
+	public Game(Client client){
 		
 		initUI();
-		server = new Client(ip);
+		server = client;
+		seed = client.getSeed();
 	}
 	
 	private void newGame() {
@@ -586,10 +587,9 @@ public class Game extends JFrame {
 		return this.seed;
 	}
 	
-	public static void main(String[] args, String ip, long Seed) {
-		seed = Seed;
+	public static void main(String[] args, Client client) {
 		EventQueue.invokeLater(() -> {
-            Game mm = new Game(ip);
+            Game mm = new Game(client);
             mm.setVisible(true);
         });
 	}

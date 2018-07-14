@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import client.Client;
 import gameLogic.Game;
 
 
@@ -60,7 +61,7 @@ public class FindGameMenu extends JFrame {
         	} else {
         		//TODO check bad IP
         		this.leavePage();
-        		Game.main(args, roomCode);
+        		Game.main(args, new Client(roomCode));
         	}
         });
         
