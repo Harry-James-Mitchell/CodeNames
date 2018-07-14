@@ -46,7 +46,7 @@ public class Game extends JFrame {
 		
 		initUI();
 		server = client;
-		seed = client.getSeed();
+		
 	}
 	
 	private void newGame() {
@@ -54,6 +54,7 @@ public class Game extends JFrame {
 		turnName.setText("RED's Turn");
 		redScore = RED_CARDS;
 		blueScore = BLUE_CARDS;
+		seed = server.getSeed();
 	}
 	
 	private void initUI() {
