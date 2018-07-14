@@ -35,6 +35,7 @@ public class Server {
 	        systemipaddress = sc.readLine().trim();
 	    
 			System.out.println("Starting server .... listening on " + systemipaddress + ":" + PORT);
+			System.out.println("Game seed is " + seed);
 			
 		}catch(Exception e) {
 			System.err.println("Could not start server on port " + PORT);
