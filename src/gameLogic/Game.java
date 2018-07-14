@@ -586,8 +586,8 @@ public class Game extends JFrame {
 		return this.seed;
 	}
 	
-	public static void main(String[] args, String ip) {
-		seed = Long.parseLong(ip);
+	public static void main(String[] args, String ip, long Seed) {
+		seed = Seed;
 		EventQueue.invokeLater(() -> {
             Game mm = new Game(ip);
             mm.setVisible(true);
