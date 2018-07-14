@@ -43,10 +43,8 @@ public class Game extends JFrame {
 	
 	
 	public Game(Client client){
-		
-		initUI();
 		server = client;
-		
+		initUI();
 	}
 	
 	private void newGame() {
