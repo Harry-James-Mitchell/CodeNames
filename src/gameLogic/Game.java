@@ -587,8 +587,7 @@ public class Game extends JFrame {
 	}
 	
 	public static void main(String[] args, String ip) {
-//		seed = Long.parseLong(ip);
-		seed = Integer.toUnsignedLong(99999999);
+		seed = Long.parseLong(ip);
 		EventQueue.invokeLater(() -> {
             Game mm = new Game(ip);
             mm.setVisible(true);
