@@ -11,8 +11,8 @@ to determine which spies are on the enemy team so they can elimante them. A full
 # Dev Team
 <ul>
 	<li> Lead dev - Harry Mitchell</li>
-	<li> Backend dev - Jeremiah Brusegaard</li>
-	<li> Frontend dev - Josh Brenneman</li>
+	<li> Lead Backend dev - Jeremiah Brusegaard</li>
+	<li> Lead Frontend dev - Josh Brenneman</li>
 	<li> Lead artist - Noah Mitchell</li>
 </ul>
 
