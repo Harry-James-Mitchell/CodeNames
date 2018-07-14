@@ -132,7 +132,7 @@ class ServerConnectionStatus implements Runnable{
 					System.exit(-1);
 				}
 //				System.out.println("\nPlayed Ping pong with server");
-				Thread.sleep(60000);
+				Thread.sleep(20000);
 			} catch (Exception e) {
 				e.printStackTrace();
 				System.out.println("Connection closed... due to time out");
