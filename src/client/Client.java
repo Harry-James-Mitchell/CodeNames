@@ -30,6 +30,12 @@ public class Client {
 			JSONObject json = new JSONObject(in.nextLine());
 			if(json.getString("type")!= null && json.getString("type").equals("idAssign")) {
 				this.clientID = json.getInt("id");
+				if(this.clientID == -1) {
+					//TODO Send error to client that the server is full
+					System.out.println("Server is full");
+					this.serverConnection.close();
+					System.exit(-1);
+				}
 			}
 			json = new JSONObject(in.nextLine());
 			if(json.getString("type")!= null && json.getString("type").equals("seedAssign")) {

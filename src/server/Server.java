@@ -20,12 +20,16 @@ import org.json.JSONObject;
 public class Server {
 
 	private static final int PORT = 5555;
+	private static final int MAX_CLIENTS = 9999;
 	private static ServerSocket server;
 	private static HashMap<Integer, Socket> clientMap;
 	private static HashMap<Integer, Thread> clientThreads;
 	public static void main(String args[]) {
 		String systemipaddress = "";
 		long seed = new Random().nextLong();
+		if(seed < 0) {
+			seed *= -1;
+		}
 		try {
 			server = new ServerSocket(PORT);
 			
@@ -50,6 +54,14 @@ public class Server {
 			try {
 				clientSocket = server.accept();
 				int clientID = genClientID();
+				if(clientID == -1) {
+					JSONObject json = new JSONObject();
+					json.put("type", "idAssign");
+					json.put("id", clientID);
+					json.put("msg", "Server is full");
+					sendJSON(clientSocket, json);
+					continue;
+				}
 				clientMap.put(clientID, clientSocket);
 				System.out.println("Client " + clientID + " " +  clientSocket.getInetAddress() + ":" + clientSocket.getPort() + " connected");
 				sendClientID(clientSocket, clientID);
@@ -82,7 +94,7 @@ public class Server {
 		}
 		
 	}
-private static void sendClientSeed(Socket client,int clientID,long seed) {
+	private static void sendClientSeed(Socket client,int clientID,long seed) {
 		
 		try {
 			JSONObject json = new JSONObject();
@@ -100,10 +112,11 @@ private static void sendClientSeed(Socket client,int clientID,long seed) {
 		
 	}
 	private static Integer genClientID() {
-		Integer id = 0;
+		
 		Random random = new Random();
-		while(clientMap.containsKey(id)) {
-			id = random.nextInt(99999);
+		Integer id = -1;
+		while(clientMap.containsKey(id) && clientMap.size() < MAX_CLIENTS) {
+			id = random.nextInt(MAX_CLIENTS);
 		}
 		return id;
 	}
