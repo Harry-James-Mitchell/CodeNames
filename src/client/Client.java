@@ -10,20 +10,22 @@ import java.util.Scanner;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import gameLogic.Game;
+
 public class Client {
 
 	private static final int PORT = 5555;
 	private Socket serverConnection;
-	private int clientID;
+	private static int clientID;
 	private long seed;
-	private PrintWriter serverWriter;
-	private Scanner serverReader;
-	public Client(String serverIp) {
+	private static PrintWriter serverWriter;
+	private static Scanner serverReader;
+	public Client(String serverIp,Game game) {
 		//TODO Add error checking for bad ip
 		//Potentially have user put in port
 				
 		this.serverConnection = null;
-		this.serverWriter = null;
+		serverWriter = null;
 		try {
 			this.serverConnection = new Socket(serverIp, PORT);
 			serverWriter = new PrintWriter(new BufferedOutputStream(this.serverConnection.getOutputStream()));
@@ -60,8 +62,10 @@ public class Client {
 				System.exit(-1);
 			}
 			System.out.println("Seed is " + seed);
-			Thread serverConnectionChecker = new Thread(new ServerConnectionStatus(this.serverConnection, this.clientID, this.serverWriter,this.serverReader));
-			serverConnectionChecker.start();
+			Thread messageSender = new Thread(new MessageSender());
+			Thread serverListener = new Thread(new ServerListener(this.serverConnection, clientID,serverWriter,serverReader));
+			messageSender.start();
+			serverListener.start();
 		}catch (Exception e) {
 			System.err.println("Unable to resolve " + serverIp + ":" + PORT);
 			e.printStackTrace();
@@ -75,17 +79,14 @@ public class Client {
 	public boolean checkConnection() {
 		return true;
 	}
-	public static void main(String args[]) {
-		Client client = new Client("localhost");
-	}
 	public long getSeed() {
 		return this.seed;
 	}
-	public void sendMessage(String msg) {
+	public static void sendMessage(String msg) {
 		JSONObject json = new JSONObject();
 		try {
 			json.put("type", "msg");
-			json.put("id", this.clientID);
+			json.put("id", clientID);
 			json.put("msg", msg);
 			
 			serverWriter.println(json.toString());
@@ -107,14 +108,35 @@ public class Client {
 		}
 		
 	}
+	public static void main(String args []) {
+		Client client = new Client("localhost", null);
+	}
 	
 }
-class ServerConnectionStatus implements Runnable{
+class MessageSender implements Runnable{
+	
+	@Override
+	public void run() {
+		String msg = "";
+		Scanner in = new Scanner(System.in);
+		System.out.println("Type a message and hit enter to send to your friends!");
+		while(true) {
+			try {
+				msg = in.nextLine();
+				System.out.println();
+				Client.sendMessage(msg);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+}
+class ServerListener implements Runnable{
 	private Socket serverConnection;
 	private int clientID;
 	private PrintWriter serverWriter;
 	private Scanner serverReader;
-	public ServerConnectionStatus(Socket socket,int clientID,PrintWriter serverWriter, Scanner serverReader) {
+	public ServerListener(Socket socket,int clientID,PrintWriter serverWriter, Scanner serverReader) {
 		this.serverConnection = socket;
 		this.clientID = clientID;
 		this.serverWriter = serverWriter;
@@ -122,33 +144,17 @@ class ServerConnectionStatus implements Runnable{
 	}
 	@Override
 	public void run() {
+		String msg = "";
 		while(true) {
-			JSONObject json = new JSONObject();
 			try {
-				json.put("type", "connectChk");
-				json.put("id", this.clientID);
-				json.put("msg", "PING");
-				
-				serverWriter.println(json.toString());
-				serverWriter.flush();
 				JSONObject response = new JSONObject(serverReader.nextLine());
-				if(!response.getString("type").equals(json.getString("type")) || response.getInt("id") != json.getInt("id") || !response.getString("msg").equals("PONG")) {
-					System.out.println("Connection closed... due to time out");
-					this.serverConnection.close();
-					System.exit(-1);
+				if(response.has("type") && response.getString("type").equals("msg")) {
+					msg = response.getString("msg");
+					System.out.println("\nClient " + response.getInt("id") + ": " + msg);
 				}
-//				System.out.println("\nPlayed Ping pong with server");
-				Thread.sleep(20000);
+				
 			} catch (Exception e) {
 				e.printStackTrace();
-				System.out.println("Connection closed... due to time out");
-				try {
-					this.serverConnection.close();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				System.exit(-1);
 			}
 		}
 	}
