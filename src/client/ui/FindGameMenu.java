@@ -28,7 +28,7 @@ public class FindGameMenu extends JFrame {
 	public void initUI() {
 		JPanel displayPanel = new JPanel();
 		displayPanel.setLayout(null);
-		setTitle("Main Menu");
+		setTitle("Find Game Menu");
 		setSize(width, height);
 		setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
