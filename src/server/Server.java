@@ -164,6 +164,8 @@ class ClientJSONReciever implements Runnable{
 					json.put("msg", "PONG");
 					Server.sendJSON(this.serverConnection, json);
 					break;
+				case "gameMove":
+					break;
 				default:
 					break;
 				}
