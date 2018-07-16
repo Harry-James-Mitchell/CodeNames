@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 
 public class CreditsMenu extends JFrame{
 
-	private final int WIDTH = 400;
+	private final int WIDTH = 450;
 	private final int HEIGHT = 500;
 	private final int PIC_WIDTH = 150;
 	private final int PIC_HEIGHT = 150;
@@ -44,15 +44,18 @@ public class CreditsMenu extends JFrame{
         ImageIcon NoahFace = new ImageIcon("pics/NoahMeme.png");
 		
 		JLabel jer = new JLabel("Jeremiah Brusegaard");
-		jer.setLocation(50, 150);
+		jer.setLocation(40, 225);
 		jer.setSize(150, 20);
 		JLabel JerryPic = new JLabel(JerryFace);
 		JerryPic.setSize(PIC_WIDTH, PIC_HEIGHT);
-//		JerryPic.setLocation(x, y);
+		JerryPic.setLocation(25, 235);
 		
 		JLabel jos = new JLabel("Josh Brenneman");
-		jos.setLocation(250, 50);
+		jos.setLocation(265, 10);
 		jos.setSize(150, 20);
+		JLabel JoshPic = new JLabel(JoshFace);
+		JoshPic.setSize(PIC_WIDTH, PIC_HEIGHT);
+		JoshPic.setLocation(235, 40);
 		
 		JLabel har = new JLabel("Harry Mitchell");
 		har.setLocation(65, 10);
@@ -62,15 +65,18 @@ public class CreditsMenu extends JFrame{
 		HarryPic.setLocation(25, 40);
 		
 		JLabel noa = new JLabel("Noah Mitchell");
-		noa.setLocation(250, 150);
+		noa.setLocation(265, 225);
 		noa.setSize(150, 20);
+		JLabel NoahPic = new JLabel(NoahFace);
+		NoahPic.setSize(PIC_WIDTH, PIC_HEIGHT);
+		NoahPic.setLocation(235, 235);
 		
 		JButton mainBtn = new JButton("Main Menu");
 		mainBtn.addActionListener((ActionEvent event) -> {
 			MainMenu.main(null);
 			leavePage();
 		});		
-		mainBtn.setLocation(150, 300);
+		mainBtn.setLocation(150, 400);
 		mainBtn.setSize(100, 50);
 		
 		displayPanel.add(jer);
@@ -79,6 +85,9 @@ public class CreditsMenu extends JFrame{
 		displayPanel.add(noa);
 		displayPanel.add(mainBtn);
 		displayPanel.add(HarryPic);
+		displayPanel.add(JoshPic);
+		displayPanel.add(JerryPic);
+		displayPanel.add(NoahPic);
 		
         this.add(displayPanel);
         this.setVisible(true);
