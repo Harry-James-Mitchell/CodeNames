@@ -2,6 +2,7 @@ package client.ui;
 
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -53,6 +54,15 @@ public class FindGameMenu extends JFrame {
         	MainMenu.main(args);
         	leavePage();
         });
+        
+        ip.addActionListener(new ActionListener() {
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+		    	String roomCode = ip.getText();
+		    	leavePage();
+		    	Game.main(args, new Client(roomCode));
+		    }
+		});
         
         joinIP.addActionListener((ActionEvent event) -> {
         	String roomCode = ip.getText();
