@@ -60,7 +60,7 @@ public class FindGameMenu extends JFrame {
 		    public void actionPerformed(ActionEvent e) {
 		    	String roomCode = ip.getText();
 		    	leavePage();
-		    	Game.main(args, new Client(roomCode));
+		    	Game.main(args, new Client(roomCode,null));
 		    }
 		});
         
@@ -71,7 +71,7 @@ public class FindGameMenu extends JFrame {
         	} else {
         		//TODO check bad IP
         		this.leavePage();
-        		Game.main(args, new Client(roomCode));
+        		Game.main(args, new Client(roomCode,null));
         	}
         });
         

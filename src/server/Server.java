@@ -22,7 +22,7 @@ public class Server {
 	private static final int PORT = 5555;
 	private static final int MAX_CLIENTS = 9999;
 	private static ServerSocket server;
-	private static HashMap<Integer, Socket> clientMap;
+	public static HashMap<Integer, Socket> clientMap;
 	private static HashMap<Integer, Thread> clientThreads;
 	public static void main(String args[]) {
 		String systemipaddress = "";
@@ -115,7 +115,7 @@ public class Server {
 		
 		Random random = new Random();
 		Integer id = -1;
-		while(clientMap.containsKey(id) && clientMap.size() < MAX_CLIENTS) {
+		while(id == -1 || (clientMap.containsKey(id) && clientMap.size() < MAX_CLIENTS)) {
 			id = random.nextInt(MAX_CLIENTS);
 		}
 		return id;
@@ -159,6 +159,11 @@ class ClientJSONReciever implements Runnable{
 				switch (json.getString("type")) {
 				case "msg":
 					System.out.println("Client " + json.getInt("id") + ": " + json.get(json.getString("type")));
+					for(Integer clientID :Server.clientMap.keySet()) {
+						if(clientID != json.getInt("id")) {
+							Server.sendJSON(Server.clientMap.get(clientID), json);
+						}
+					}
 					break;
 				case "connectChk":
 					json.put("msg", "PONG");
